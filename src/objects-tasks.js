@@ -162,8 +162,26 @@ function makeWord(lettersObject) {
  *    sellTickets([25, 25, 50]) => true
  *    sellTickets([25, 100]) => false (The seller does not have enough money to give change.)
  */
-function sellTickets(/* queue */) {
-  throw new Error('Not implemented');
+function sellTickets(queue) {
+  let sum = 0;
+  const ticketPrice = 25;
+
+  // если элемент 25 ===  элемент прибавляется к новому массиву,
+  // еcли элемент больше 25 === элемент - 25 > суммы в массиве или нет в случае нет => false
+  return queue.every((element) => {
+    if (element === ticketPrice) {
+      sum += element;
+      return true;
+    }
+    if (element > ticketPrice) {
+      if (element - ticketPrice > sum) {
+        return false;
+      }
+      sum += element;
+      return true;
+    }
+    return true;
+  });
 }
 
 /**
@@ -179,9 +197,15 @@ function sellTickets(/* queue */) {
  *    console.log(r.height);      // => 20
  *    console.log(r.getArea());   // => 200
  */
-function Rectangle(/* width, height */) {
-  throw new Error('Not implemented');
+function Rectangle(width, height) {
+  this.width = width;
+  this.height = height;
 }
+
+// или оставить анонимную функцию?
+Rectangle.prototype.getArea = function getArea() {
+  return this.width * this.height;
+};
 
 /**
  * Returns the JSON representation of specified object
@@ -193,8 +217,8 @@ function Rectangle(/* width, height */) {
  *    [1,2,3]   =>  '[1,2,3]'
  *    { height: 10, width: 20 } => '{"height":10,"width":20}'
  */
-function getJSON(/* obj */) {
-  throw new Error('Not implemented');
+function getJSON(obj) {
+  return JSON.stringify(obj);
 }
 
 /**
@@ -208,16 +232,18 @@ function getJSON(/* obj */) {
  *    const r = fromJSON(Circle.prototype, '{"radius":10}');
  *
  */
-function fromJSON(/* proto, json */) {
-  throw new Error('Not implemented');
+function fromJSON(proto, json) {
+  const obj = JSON.parse(json);
+
+  return new proto.constructor(...Object.values(obj));
 }
 
 /**
  * Sorts the specified array by country name first and city name
  * (if countries are equal) in ascending order.
  *
- * @param {array} arr
- * @return {array}
+ * @param {Array<{country: string, city: string}>} arr
+ * @return {Array<{country: string, city: string}>} arr
  *
  * @example
  *    [
@@ -238,8 +264,14 @@ function fromJSON(/* proto, json */) {
  *      { country: 'Russia',  city: 'Saint Petersburg' }
  *    ]
  */
-function sortCitiesArray(/* arr */) {
-  throw new Error('Not implemented');
+function sortCitiesArray(arr) {
+  return arr.sort((a, b) => {
+    const countryCompare = a.country.localeCompare(b.country);
+    if (countryCompare !== 0) {
+      return countryCompare;
+    }
+    return a.city.localeCompare(b.city);
+  });
 }
 
 /**
