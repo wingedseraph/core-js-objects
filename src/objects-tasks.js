@@ -61,7 +61,13 @@ function mergeObjects(objects) {
  *
  */
 function removeProperties(obj, keys) {
-  // пройтись по объекту, для кажддого ключа удалить свойство
+  const copyObj = obj;
+  Object.keys(copyObj).forEach((key) => {
+    if (keys.includes(key)) {
+      delete copyObj[key];
+    }
+  });
+  return copyObj;
 }
 
 /**
@@ -76,10 +82,15 @@ function removeProperties(obj, keys) {
  *    compareObjects({a: 1, b: 2}, {a: 1, b: 2}) => true
  *    compareObjects({a: 1, b: 2}, {a: 1, b: 3}) => false
  */
-function compareObjects(/* obj1, obj2 */) {
-  throw new Error('Not implemented');
-}
+function compareObjects(obj1, obj2) {
+  const keys1 = Object.keys(obj1);
+  const keys2 = Object.keys(obj2);
 
+  return (
+    JSON.stringify(obj1) === JSON.stringify(obj2) &&
+    keys1.length === keys2.length
+  );
+}
 /**
  * Checks if the source object is empty.
  * Returns true if the object contains no enumerable own properties, false otherwise.
